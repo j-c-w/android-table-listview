@@ -1,0 +1,1 @@
+This is a simple adaptation of the standard Android ListView so that it can display tabulated data in a more efficient way than creating an excessively long TableLayout.
