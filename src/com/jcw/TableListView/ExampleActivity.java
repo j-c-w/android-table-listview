@@ -26,6 +26,7 @@
 package com.jcw.TableListView;
 
 import android.app.Activity;
+import android.os.Bundle;
 
 /**
  * Created by Jackson on 1/28/2015.
@@ -34,4 +35,21 @@ import android.app.Activity;
  * TableList
  */
 public class ExampleActivity extends Activity {
+	public static final String[][] values = new String[][] {
+			new String[] {"Column 1", "Column 2", "Column 3"},
+			new String[] {"Inputs", "Inputs", "inputs"}
+	};
+
+	@Override
+	public void onCreate(Bundle savedInstance) {
+		super.onCreate(savedInstance);
+		TableAdapter tableAdapter = new TableAdapter(this, values);
+		TableList table = new TableList(this);
+		setContentView(table);
+
+		table.setColumnWidths(new int[] {100, 100, 100});
+		tableAdapter.setColumnWidths(new int[] {100, 100, 100});
+		tableAdapter.getView(0, null, null);
+		table.setAdapter(tableAdapter);
+	}
 }

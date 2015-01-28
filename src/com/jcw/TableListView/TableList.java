@@ -42,6 +42,7 @@ public class TableList extends RelativeLayout {
 	ListView table;
 	LinearLayout tableHeaders;
 
+	private TableAdapter tableAdapter;
 	int[] columnWidths;
 
 	public TableList(Context context) {
@@ -60,6 +61,9 @@ public class TableList extends RelativeLayout {
 	}
 
 	private void init() {
+		tableAdapter = new TableAdapter(getContext(), new CharSequence[0][0]);
+		table = new ListView(getContext());
+		tableHeaders = new LinearLayout(getContext());
 		
 	}
 
@@ -69,6 +73,7 @@ public class TableList extends RelativeLayout {
 	 * this array is the size of each respective column
 	 */
 	public void setColumnWidths(int[] widths) {
+		tableAdapter.setColumnWidths(widths);
 		this.columnWidths = widths;
 	}
 
@@ -81,7 +86,7 @@ public class TableList extends RelativeLayout {
 	 * and so must be called after the view has been
 	 * added to a layout
 	 */
-	public void setColumnWdiths(int numberOfColumns) {
+	public void setColumnWidths(int numberOfColumns) {
 		if (this.getWidth() == 0) {
 			throw new NullPointerException("To automatically generate the sizes of the columns" +
 					" the TableList must already be rendered. Use setColumnWidths(int[] widths) instead");
@@ -108,7 +113,9 @@ public class TableList extends RelativeLayout {
 	}
 
 	public void setAdapter(TableAdapter adapter) {
-		adapter.setColumnWidths(this.columnWidths);
+		if (columnWidths != null) {
+			adapter.setColumnWidths(this.columnWidths);
+		}
 		table.setAdapter(adapter);
 	}
 }
