@@ -27,6 +27,7 @@ package com.jcw.TableListView;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -43,7 +44,7 @@ public class TableList extends LinearLayout {
 	LinearLayout tableHeaders;
 
 	private TableAdapter tableAdapter;
-	int[] columnWidths;
+	float[] columnWidths;
 
 	public TableList(Context context) {
 		super(context);
@@ -73,12 +74,22 @@ public class TableList extends LinearLayout {
 		this.addView(table);
 	}
 
+	@Override
+	public void onDraw(Canvas target) {
+		// This is implemented beause we can be certain that the
+		// width will have been determined by this point.
+		if (tableAdapter != null) {
+			tableAdapter.setTotalWidth(target.getWidth());
+		}
+		super.onDraw(target);
+	}
+
 	/*
 	 * The length of the array is the number of columns
 	 * that will be used. The contents of every slot in
 	 * this array is the size of each respective column
 	 */
-	public void setColumnWidths(int[] widths) {
+	public void setColumnWidths(float[] widths) {
 		tableAdapter.setColumnWidths(widths);
 		this.columnWidths = widths;
 	}
@@ -99,7 +110,7 @@ public class TableList extends LinearLayout {
 		}
 
 		int totalWidth = this.getWidth();
-		columnWidths = new int[numberOfColumns];
+		columnWidths = new float[numberOfColumns];
 		Arrays.fill(columnWidths, totalWidth / numberOfColumns);
 	}
 
@@ -119,9 +130,6 @@ public class TableList extends LinearLayout {
 	}
 
 	public void setAdapter(TableAdapter adapter) {
-		if (columnWidths != null) {
-			adapter.setColumnWidths(this.columnWidths);
-		}
 		table.setAdapter(adapter);
 	}
 }

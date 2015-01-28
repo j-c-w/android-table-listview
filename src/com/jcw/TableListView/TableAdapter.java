@@ -33,9 +33,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by Jackson on 1/28/2015.
  *
@@ -48,13 +45,17 @@ import java.util.List;
  * specify the size of each column).
  */
 public class TableAdapter extends ArrayAdapter<CharSequence[]> {
-	int[] columnWidths;
+	float[] columnWidths = new float[0];
+	int numberOfColumns = 0;
+	int totalWidth = 0;
+	int usableWidth = 0;
 
 	// These are some numbers used for storing various settings
 	// to do with the appearence of the list
-	int spaceColor = Color.TRANSPARENT;
+	int spaceColor = Color.WHITE;
 	int columnSpacing = 0;
 	int rowSpacing = 0;
+	int cellPadding = 0;
 
 	int cellBackgroundColor = Color.TRANSPARENT;
 	
@@ -65,12 +66,12 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		CharSequence[] contents = getItem(position);
+		// We need to update all the floats for the width etc. here
+		// in case the size of the view has changed since the last
+		// getView call.
 
-		if (columnWidths == null) {
-			throw new NullPointerException("You must call setColumnWidths before" +
-					" trying to draw the table");
-		}
+
+		CharSequence[] contents = getItem(position);
 
 		// This layout is necessary in case we need to put the
 		// line in above the row.
@@ -99,7 +100,7 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 			}
 			TextView cell = new TextView(getContext());
 			LinearLayout.LayoutParams cellParams = new LinearLayout.LayoutParams(
-					columnWidths[i], ViewGroup.LayoutParams.MATCH_PARENT
+					(int) (columnWidths[i] * usableWidth), ViewGroup.LayoutParams.MATCH_PARENT
 			);
 			cell.setBackgroundColor(cellBackgroundColor);
 			cell.setText(contents[i]);
@@ -121,13 +122,41 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 
 	public void setColumnSpacing(int spacing) {
 		this.columnSpacing = spacing;
+		updateDimensions();
 	}
 
 	public void setRowSpacing(int spacing) {
 		this.rowSpacing = spacing;
+		updateDimensions();
 	}
 	
-	public void setColumnWidths(int[] widths) {
+	public void setColumnWidths(float[] widths) {
 		this.columnWidths = widths;
+		updateDimensions();
+	}
+
+	public void setCellPadding(int padding) {
+		this.cellPadding = padding;
+		updateDimensions();
+	}
+
+	/*
+	 * This has protected access because you should never need to call
+	 * it in person. It is set by the TableList as a default to the
+	 * correct value just before the table is drawn
+	 */
+	public void setTotalWidth(int width) {
+		this.totalWidth = width;
+		updateDimensions();
+	}
+
+	/*
+	 * This is a small method used for keeping the values up to date.
+	 *
+	 * It is private because it is called automatically when it has to be.
+	 */
+	private void updateDimensions() {
+		this.numberOfColumns = columnWidths.length;
+		this.usableWidth = this.totalWidth - (numberOfColumns * columnSpacing) - (numberOfColumns * 2 * cellPadding);
 	}
 }
