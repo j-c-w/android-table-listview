@@ -49,7 +49,7 @@ public class ExampleActivity extends Activity {
 		TableList table = new TableList(this);
 		setContentView(table);
 
-		table.setColumnWidths(new int[] {100, 100, 100});
+		table.setColumnWidths(new float[] {0.33f, 0.33f, 0.33f});
 		table.setAdapter(tableAdapter);
 	}
 }
