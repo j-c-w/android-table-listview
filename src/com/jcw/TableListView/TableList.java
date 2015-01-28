@@ -65,6 +65,9 @@ public class TableList extends LinearLayout {
 		table = new ListView(getContext());
 		tableHeaders = new LinearLayout(getContext());
 
+		table.setDivider(null);
+		table.setDividerHeight(0);
+
 		this.setOrientation(VERTICAL);
 		this.addView(tableHeaders);
 		this.addView(table);
