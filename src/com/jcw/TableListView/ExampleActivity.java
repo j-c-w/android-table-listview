@@ -44,6 +44,8 @@ public class ExampleActivity extends Activity {
 	public void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
 		TableAdapter tableAdapter = new TableAdapter(this, values);
+		tableAdapter.setColumnSpacing(2);
+		tableAdapter.setRowSpacing(2);
 		TableList table = new TableList(this);
 		setContentView(table);
 
