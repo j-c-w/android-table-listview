@@ -1,6 +1,7 @@
 .idea/
 bin/
 gen/
+out/
 *.properties
 *.iml
 build.xml
