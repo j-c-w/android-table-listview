@@ -59,6 +59,10 @@ public class TableList extends RelativeLayout {
 		init();
 	}
 
+	private void init() {
+		
+	}
+
 	/*
 	 * The length of the array is the number of columns
 	 * that will be used. The contents of every slot in
@@ -104,7 +108,7 @@ public class TableList extends RelativeLayout {
 	}
 
 	public void setAdapter(TableAdapter adapter) {
-		this.tableAdapter = adapter;
+		adapter.setColumnWidths(this.columnWidths);
 		table.setAdapter(adapter);
 	}
 }
