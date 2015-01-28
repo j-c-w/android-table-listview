@@ -102,8 +102,11 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 					columnWidths[i], ViewGroup.LayoutParams.MATCH_PARENT
 			);
 			cell.setBackgroundColor(cellBackgroundColor);
+			cell.setText(contents[i]);
 			itemContainer.addView(cell, cellParams);
 		}
+
+		tableRow.addView(itemContainer);
 
 		return tableRow;
 	}

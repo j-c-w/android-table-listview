@@ -38,7 +38,7 @@ import java.util.Arrays;
 /**
  * Created by Jackson on 1/28/2015.
  */
-public class TableList extends RelativeLayout {
+public class TableList extends LinearLayout {
 	ListView table;
 	LinearLayout tableHeaders;
 
@@ -64,7 +64,10 @@ public class TableList extends RelativeLayout {
 		tableAdapter = new TableAdapter(getContext(), new CharSequence[0][0]);
 		table = new ListView(getContext());
 		tableHeaders = new LinearLayout(getContext());
-		
+
+		this.setOrientation(VERTICAL);
+		this.addView(tableHeaders);
+		this.addView(table);
 	}
 
 	/*

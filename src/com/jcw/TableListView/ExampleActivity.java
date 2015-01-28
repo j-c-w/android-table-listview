@@ -48,8 +48,6 @@ public class ExampleActivity extends Activity {
 		setContentView(table);
 
 		table.setColumnWidths(new int[] {100, 100, 100});
-		tableAdapter.setColumnWidths(new int[] {100, 100, 100});
-		tableAdapter.getView(0, null, null);
 		table.setAdapter(tableAdapter);
 	}
 }
