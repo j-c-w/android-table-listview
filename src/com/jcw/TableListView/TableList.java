@@ -96,6 +96,7 @@ public class TableList extends LinearLayout {
 	public void setColumnWidths(int numberOfColumns) {
 		columnWidths = new float[numberOfColumns];
 		Arrays.fill(columnWidths, 1f / (float)numberOfColumns);
+		tableAdapter.setColumnWidths(columnWidths);
 	}
 
 	/*
