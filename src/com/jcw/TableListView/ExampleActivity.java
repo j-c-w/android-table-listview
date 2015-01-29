@@ -43,13 +43,13 @@ public class ExampleActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
-		TableAdapter tableAdapter = new TableAdapter(this, values);
+		TableAdapter tableAdapter = new SimpleTableAdapter(this, values);
 		tableAdapter.setColumnSpacing(2);
 		tableAdapter.setRowSpacing(2);
 		TableList table = new TableList(this);
 		setContentView(table);
 
-		table.setColumnWidths(new float[] {0.33f, 0.33f, 0.33f});
+		table.setColumnWidths(new float[]{0.33f, 0.33f, 0.33f});
 		table.setAdapter(tableAdapter);
 	}
 }

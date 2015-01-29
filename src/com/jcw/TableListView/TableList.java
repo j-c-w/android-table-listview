@@ -62,7 +62,7 @@ public class TableList extends LinearLayout {
 	}
 
 	private void init() {
-		tableAdapter = new TableAdapter(getContext(), new CharSequence[0][0]);
+		tableAdapter = new SimpleTableAdapter(getContext(), new CharSequence[0][0]);
 		table = new ListView(getContext());
 		tableHeaders = new LinearLayout(getContext());
 

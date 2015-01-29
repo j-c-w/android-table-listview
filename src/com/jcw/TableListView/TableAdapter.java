@@ -47,7 +47,7 @@ import java.util.Arrays;
  * added to it (as opposed to someone having to
  * specify the size of each column).
  */
-public class TableAdapter extends ArrayAdapter<CharSequence[]> {
+public abstract class TableAdapter<T> extends ArrayAdapter<T> {
 	float[] columnWidths = new float[0];
 	int numberOfColumns = 0;
 	int unusableWidth = 0;
@@ -61,10 +61,12 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 
 	int cellBackgroundColor = Color.TRANSPARENT;
 	
-	public TableAdapter(Context context, CharSequence[][] values) {
+	public TableAdapter(Context context, T[] values) {
 		// 0 is okay to pass here because we are going to the the the 
 		super(context, 0, values);
 	}
+
+	public abstract View getView(int position, View convertView, ViewGroup parent, int usableWidth);
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -73,8 +75,6 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 		// getView call.
 
 		int usableWidth = parent.getWidth() - unusableWidth;
-
-		CharSequence[] contents = getItem(position);
 
 		// This layout is necessary in case we need to put the
 		// line in above the row.
@@ -90,27 +90,7 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 			tableRow.addView(rowDivider, dividerParams);
 		}
 
-		LinearLayout itemContainer = new LinearLayout(getContext());
-
-		for (int i = 0; i < Math.min(contents.length, columnWidths.length); i ++) {
-			if (i != 0) {
-				View columnDivider = new View(getContext());
-				LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
-						columnSpacing, ViewGroup.LayoutParams.MATCH_PARENT
-				);
-				columnDivider.setBackgroundColor(spaceColor);
-				itemContainer.addView(columnDivider, dividerParams);
-			}
-			TextView cell = new TextView(getContext());
-			LinearLayout.LayoutParams cellParams = new LinearLayout.LayoutParams(
-					(int) (columnWidths[i] * usableWidth), ViewGroup.LayoutParams.MATCH_PARENT
-			);
-			cell.setBackgroundColor(cellBackgroundColor);
-			cell.setText(contents[i]);
-			itemContainer.addView(cell, cellParams);
-		}
-
-		tableRow.addView(itemContainer);
+		tableRow.addView(getView(position, convertView, parent, usableWidth));
 
 		return tableRow;
 	}
