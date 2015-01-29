@@ -95,6 +95,18 @@ public abstract class TableAdapter<T> extends ArrayAdapter<T> {
 		return tableRow;
 	}
 
+	protected View getRowSeparator() {
+		View rowSeparator = new View(getContext());
+		rowSeparator.setBackgroundColor(spaceColor);
+
+		ViewGroup.LayoutParams separatorParams = new ViewGroup.LayoutParams(
+				columnSpacing, ViewGroup.LayoutParams.MATCH_PARENT
+		);
+		rowSeparator.setLayoutParams(separatorParams);
+
+		return rowSeparator;
+	}
+
 	public void setCellBackgroundColor(int color) {
 		this.cellBackgroundColor = color;
 	}

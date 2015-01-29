@@ -28,6 +28,7 @@ package com.jcw.TableListView;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 /**
  * Created by Jackson on 1/29/2015.
@@ -48,12 +49,30 @@ public abstract class RowBasedTableAdapter<T> extends TableAdapter<T> {
 	public View getView(int position, View convertView, ViewGroup parent, int usableWidth) {
 		int[] fixedColumnWidths = new int[columnWidths.length];
 
+		LinearLayout row = new LinearLayout(getContext());
+		row.setOrientation(LinearLayout.HORIZONTAL);
+
 		for (int i = 0; i < columnWidths.length; i ++) {
 			fixedColumnWidths[i] = (int) (columnWidths[i] * usableWidth);
 		}
-		return getRow(position, convertView, parent, fixedColumnWidths, rowSpacing);
+
+		View[] cells = getRow(position, convertView, parent, fixedColumnWidths);
+
+		for (int i = 0; i < cells.length; i ++) {
+			if (i != 0) {
+				row.addView(getRowSeparator());
+			}
+
+			ViewGroup.LayoutParams cellParams = new ViewGroup.LayoutParams(
+					fixedColumnWidths[i], ViewGroup.LayoutParams.MATCH_PARENT
+			);
+
+			row.addView(cells[i], cellParams);
+		}
+
+		return row;
 	}
 
-	public abstract View getRow(int position, View convertView, ViewGroup parent,
-	                            int[] columnWidths, int rowSpaces);
+	public abstract View[] getRow(int position, View convertView, ViewGroup parent,
+	                            int[] columnWidths);
 }

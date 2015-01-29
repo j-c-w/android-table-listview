@@ -26,14 +26,9 @@ public abstract class CellBasedAdapter<T> extends TableAdapter<T> {
 
 		for (int i = 0; i < columnWidths.length; i ++) {
 			if (i != 0) {
-				View rowSeparator = new View(getContext());
-				rowSeparator.setBackgroundColor(spaceColor);
+				View rowSeparator = getRowSeparator();
 
-				ViewGroup.LayoutParams separatorParams = new ViewGroup.LayoutParams(
-						columnSpacing, ViewGroup.LayoutParams.MATCH_PARENT
-				);
-
-				row.addView(rowSeparator, separatorParams);
+				row.addView(rowSeparator);
 			}
 
 			ViewGroup.LayoutParams contentsParams = new ViewGroup.LayoutParams(
