@@ -46,8 +46,14 @@ public abstract class RowBasedTableAdapter<T> extends TableAdapter<T> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent, int usableWidth) {
-		return getRow(position, convertView, parent, usableWidth);
+		int[] fixedColumnWidths = new int[columnWidths.length];
+
+		for (int i = 0; i < columnWidths.length; i ++) {
+			fixedColumnWidths[i] = (int) (columnWidths[i] * usableWidth);
+		}
+		return getRow(position, convertView, parent, fixedColumnWidths, rowSpacing);
 	}
 
-	public abstract View getRow(int position, View convertView, ViewGroup parent, int usableWidth);
+	public abstract View getRow(int position, View convertView, ViewGroup parent,
+	                            int[] columnWidths, int rowSpaces);
 }
