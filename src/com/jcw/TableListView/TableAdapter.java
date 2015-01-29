@@ -32,6 +32,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Arrays;
 
 /**
  * Created by Jackson on 1/28/2015.
@@ -47,8 +50,7 @@ import android.widget.TextView;
 public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 	float[] columnWidths = new float[0];
 	int numberOfColumns = 0;
-	int totalWidth = 0;
-	int usableWidth = 0;
+	int unusableWidth = 0;
 
 	// These are some numbers used for storing various settings
 	// to do with the appearence of the list
@@ -70,6 +72,7 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 		// in case the size of the view has changed since the last
 		// getView call.
 
+		int usableWidth = parent.getWidth() - unusableWidth;
 
 		CharSequence[] contents = getItem(position);
 
@@ -141,22 +144,12 @@ public class TableAdapter extends ArrayAdapter<CharSequence[]> {
 	}
 
 	/*
-	 * This has protected access because you should never need to call
-	 * it in person. It is set by the TableList as a default to the
-	 * correct value just before the table is drawn
-	 */
-	public void setTotalWidth(int width) {
-		this.totalWidth = width;
-		updateDimensions();
-	}
-
-	/*
 	 * This is a small method used for keeping the values up to date.
 	 *
 	 * It is private because it is called automatically when it has to be.
 	 */
 	private void updateDimensions() {
 		this.numberOfColumns = columnWidths.length;
-		this.usableWidth = this.totalWidth - (numberOfColumns * columnSpacing) - (numberOfColumns * 2 * cellPadding);
+		this.unusableWidth= - (numberOfColumns * columnSpacing) - (numberOfColumns * 2 * cellPadding);
 	}
 }

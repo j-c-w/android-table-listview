@@ -74,16 +74,6 @@ public class TableList extends LinearLayout {
 		this.addView(table);
 	}
 
-	@Override
-	public void onDraw(Canvas target) {
-		// This is implemented beause we can be certain that the
-		// width will have been determined by this point.
-		if (tableAdapter != null) {
-			tableAdapter.setTotalWidth(target.getWidth());
-		}
-		super.onDraw(target);
-	}
-
 	/*
 	 * The length of the array is the number of columns
 	 * that will be used. The contents of every slot in
@@ -130,6 +120,7 @@ public class TableList extends LinearLayout {
 	}
 
 	public void setAdapter(TableAdapter adapter) {
+		adapter.setColumnWidths(columnWidths);
 		table.setAdapter(adapter);
 	}
 }
