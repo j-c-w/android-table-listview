@@ -94,14 +94,8 @@ public class TableList extends LinearLayout {
 	 * added to a layout
 	 */
 	public void setColumnWidths(int numberOfColumns) {
-		if (this.getWidth() == 0) {
-			throw new NullPointerException("To automatically generate the sizes of the columns" +
-					" the TableList must already be rendered. Use setColumnWidths(int[] widths) instead");
-		}
-
-		int totalWidth = this.getWidth();
 		columnWidths = new float[numberOfColumns];
-		Arrays.fill(columnWidths, totalWidth / numberOfColumns);
+		Arrays.fill(columnWidths, 1f / (float)numberOfColumns);
 	}
 
 	/*
