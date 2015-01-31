@@ -82,7 +82,7 @@ public class TableList extends LinearLayout {
 	public void setColumnWidths(float[] widths) {
 		tableAdapter.setColumnWidths(widths);
 		this.columnWidths = widths;
-		setupTableHeaders();
+		refreshUI();
 	}
 
 	/*
@@ -98,7 +98,7 @@ public class TableList extends LinearLayout {
 		columnWidths = new float[numberOfColumns];
 		Arrays.fill(columnWidths, 1f / (float)numberOfColumns);
 		tableAdapter.setColumnWidths(columnWidths);
-		setupTableHeaders();
+		refreshUI();
 	}
 
 	/*
@@ -123,20 +123,48 @@ public class TableList extends LinearLayout {
 			return;
 		}
 
-		for (int i = 0; i < tableHeaderContents.length) {
+		tableHeaders.removeAllViews();
+		tableHeaders.setOrientation(HORIZONTAL);
+
+		for (int i = 0; i < tableHeaderContents.length; i ++) {
 			if (i != 0) {
 				View rowSpacer = tableAdapter.getColumnSeparator();
+				tableHeaders.addView(rowSpacer);
 			}
 
 			TextView item = new TextView(getContext());
-			item.
+			item.setText(tableHeaderContents[i]);
+			item.setPadding(tableAdapter.cellPadding, tableAdapter.cellPadding,
+					tableAdapter.cellPadding, tableAdapter.cellPadding);
+			item.setBackgroundColor(tableAdapter.cellBackgroundColor);
+			item.setLayoutParams(tableAdapter.getLayoutParamsAt(i, this.getWidth()));
+
+			tableHeaders.addView(item);
 		}
+	}
+
+
+	/*
+	 * This method simply takes the layout and resets it.
+	 *
+	 * It is called automatically when one of the important parameters
+	 * changes
+	 */
+	private void refreshUI() {
+		this.removeAllViews();
+		this.setOrientation(VERTICAL);
+		this.addView(tableHeaders);
+		this.addView(tableAdapter.getRowSeparator());
+		this.addView(table);
+		this.addView(tableAdapter.getRowSeparator());
+
+		setupTableHeaders();
 	}
 
 	public void setAdapter(TableAdapter adapter) {
 		adapter.setColumnWidths(columnWidths);
 		table.setAdapter(adapter);
 		this.tableAdapter = adapter;
-		setupTableHeaders();
+		refreshUI();
 	}
 }

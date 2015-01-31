@@ -98,6 +98,29 @@ public abstract class TableAdapter<T> extends ArrayAdapter<T> {
 		return tableRow;
 	}
 
+	/*
+	 * This method returns the default layout params for a view in column n.
+	 */
+	public LinearLayout.LayoutParams getLayoutParamsAt(int n, int maxWidth) {
+		int usableWidth = maxWidth - unusableWidth;
+
+		return new LinearLayout.LayoutParams(
+				(int) (columnWidths[n] * usableWidth), ViewGroup.LayoutParams.MATCH_PARENT
+		);
+	}
+
+	protected View getRowSeparator() {
+		View rowSeparator = new View(getContext());
+		rowSeparator.setBackgroundColor(spaceColor);
+
+		ViewGroup.LayoutParams separatorParams = new ViewGroup.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, rowSpacing
+		);
+		rowSeparator.setLayoutParams(separatorParams);
+
+		return rowSeparator;
+	}
+
 	protected View getColumnSeparator() {
 		View rowSeparator = new View(getContext());
 		rowSeparator.setBackgroundColor(spaceColor);
