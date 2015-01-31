@@ -63,6 +63,7 @@ public abstract class RowBasedTableAdapter<T> extends TableAdapter<T> {
 				row.addView(getRowSeparator());
 			}
 
+			cells[i].setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 			ViewGroup.LayoutParams cellParams = new ViewGroup.LayoutParams(
 					fixedColumnWidths[i], ViewGroup.LayoutParams.MATCH_PARENT
 			);
