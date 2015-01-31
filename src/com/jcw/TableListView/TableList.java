@@ -30,6 +30,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,6 +75,16 @@ public class TableList extends LinearLayout {
 		table.setDivider(null);
 		table.setDividerHeight(0);
 
+
+		if (!isInEditMode()) {
+			ViewTreeObserver observer = this.getViewTreeObserver();
+			observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					setupTableHeaders();
+				}
+			});
+		}
 		this.setOrientation(VERTICAL);
 		this.addView(tableHeaders);
 		this.addView(table);
@@ -124,7 +135,7 @@ public class TableList extends LinearLayout {
 	}
 
 	private void setupTableHeaders() {
-		if (tableHeaderContents == null || columnWidths == null) {
+		if (tableHeaderContents == null || columnWidths == null || getWidth() == 0) {
 			// if the headers are null, then we will have to draw the
 			// stuff at a later date
 			return;
@@ -148,7 +159,7 @@ public class TableList extends LinearLayout {
 			item.setTextColor(headerTextColor);
 			item.setPadding(tableAdapter.cellPadding, tableAdapter.cellPadding,
 					tableAdapter.cellPadding, tableAdapter.cellPadding);
-			item.setLayoutParams(tableAdapter.getLayoutParamsAt(i, 200));
+			item.setLayoutParams(tableAdapter.getLayoutParamsAt(i, tableHeaders.getWidth()));
 
 			tableHeaders.addView(item);
 		}
