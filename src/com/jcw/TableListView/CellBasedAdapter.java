@@ -14,30 +14,21 @@ import android.widget.LinearLayout;
  * For an adapter that requests a single view per row,
  * use the RowBasedTableAdapter.
  */
-public abstract class CellBasedAdapter<T> extends TableAdapter<T> {
+public abstract class CellBasedAdapter<T> extends RowBasedTableAdapter<T> {
 	public CellBasedAdapter(Context context, T[] values) {
 		super(context, values);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent, int usableWidth) {
-		LinearLayout row = new LinearLayout(getContext());
-		row.setOrientation(LinearLayout.HORIZONTAL);
+	public View[] getRow(int position, View convertView, ViewGroup parent,
+	                     int[] columnWidths) {
+		View[] results = new View[columnWidths.length];
 
-		for (int i = 0; i < columnWidths.length; i ++) {
-			if (i != 0) {
-				View rowSeparator = getRowSeparator();
-
-				row.addView(rowSeparator);
-			}
-
-			ViewGroup.LayoutParams contentsParams = new ViewGroup.LayoutParams(
-					(int) (columnWidths[i] * usableWidth), ViewGroup.LayoutParams.MATCH_PARENT
-			);
-
-			row.addView(getCell(i, position), contentsParams);
+		for (int i = 0; i < results.length; i ++) {
+			results[i] = getCell(i, position);
 		}
-		return row;
+
+		return results;
 	}
 
 	/*
