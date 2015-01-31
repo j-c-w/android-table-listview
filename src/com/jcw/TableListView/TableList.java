@@ -86,8 +86,7 @@ public class TableList extends LinearLayout {
 			});
 		}
 		this.setOrientation(VERTICAL);
-		this.addView(tableHeaders);
-		this.addView(table);
+		refreshUI();
 	}
 
 	/*
