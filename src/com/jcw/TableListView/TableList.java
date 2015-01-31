@@ -26,13 +26,11 @@
 package com.jcw.TableListView;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Arrays;
 
@@ -41,7 +39,9 @@ import java.util.Arrays;
  */
 public class TableList extends LinearLayout {
 	ListView table;
+
 	LinearLayout tableHeaders;
+	String[] tableHeaderContents;
 
 	private TableAdapter tableAdapter;
 	float[] columnWidths;
@@ -82,6 +82,7 @@ public class TableList extends LinearLayout {
 	public void setColumnWidths(float[] widths) {
 		tableAdapter.setColumnWidths(widths);
 		this.columnWidths = widths;
+		setupTableHeaders();
 	}
 
 	/*
@@ -97,6 +98,7 @@ public class TableList extends LinearLayout {
 		columnWidths = new float[numberOfColumns];
 		Arrays.fill(columnWidths, 1f / (float)numberOfColumns);
 		tableAdapter.setColumnWidths(columnWidths);
+		setupTableHeaders();
 	}
 
 	/*
@@ -106,16 +108,35 @@ public class TableList extends LinearLayout {
 	public void setTableHeaders(View view) {
 		tableHeaders.removeAllViewsInLayout();
 		tableHeaders.addView(view);
+		this.tableHeaderContents = null;
 	}
 
 	public void setTableHeaders(String[] headers) {
-		if (columnWidths == null) {
-			throw new NullPointerException("You must call setColumnWidths before trying to add headers");
+		this.tableHeaderContents = headers;
+		setupTableHeaders();
+	}
+
+	private void setupTableHeaders() {
+		if (tableHeaderContents == null || columnWidths == null) {
+			// if the headers are null, then we will have to draw the
+			// stuff at a later date
+			return;
+		}
+
+		for (int i = 0; i < tableHeaderContents.length) {
+			if (i != 0) {
+				View rowSpacer = tableAdapter.getColumnSeparator();
+			}
+
+			TextView item = new TextView(getContext());
+			item.
 		}
 	}
 
 	public void setAdapter(TableAdapter adapter) {
 		adapter.setColumnWidths(columnWidths);
 		table.setAdapter(adapter);
+		this.tableAdapter = adapter;
+		setupTableHeaders();
 	}
 }

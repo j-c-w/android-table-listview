@@ -98,7 +98,7 @@ public abstract class TableAdapter<T> extends ArrayAdapter<T> {
 		return tableRow;
 	}
 
-	protected View getRowSeparator() {
+	protected View getColumnSeparator() {
 		View rowSeparator = new View(getContext());
 		rowSeparator.setBackgroundColor(spaceColor);
 

@@ -60,7 +60,7 @@ public abstract class RowBasedTableAdapter<T> extends TableAdapter<T> {
 
 		for (int i = 0; i < cells.length; i ++) {
 			if (i != 0) {
-				row.addView(getRowSeparator());
+				row.addView(getColumnSeparator());
 			}
 
 			cells[i].setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
