@@ -105,7 +105,7 @@ public abstract class TableAdapter<T> extends ArrayAdapter<T> {
 		int usableWidth = maxWidth - unusableWidth;
 
 		return new LinearLayout.LayoutParams(
-				(int) (columnWidths[n] * usableWidth), ViewGroup.LayoutParams.MATCH_PARENT
+				(int) (columnWidths[n] * usableWidth), ViewGroup.LayoutParams.WRAP_CONTENT
 		);
 	}
 

@@ -26,8 +26,10 @@
 package com.jcw.TableListView;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +47,9 @@ public class TableList extends LinearLayout {
 
 	private TableAdapter tableAdapter;
 	float[] columnWidths;
+
+	int headerTextColor = Color.BLACK;
+	int headerBackground = Color.TRANSPARENT;
 
 	public TableList(Context context) {
 		super(context);
@@ -111,8 +116,10 @@ public class TableList extends LinearLayout {
 		this.tableHeaderContents = null;
 	}
 
-	public void setTableHeaders(String[] headers) {
+	public void setTableHeaders(String[] headers, int textColor, int background) {
 		this.tableHeaderContents = headers;
+		this.headerTextColor = textColor;
+		this.headerBackground = background;
 		setupTableHeaders();
 	}
 
@@ -125,6 +132,10 @@ public class TableList extends LinearLayout {
 
 		tableHeaders.removeAllViews();
 		tableHeaders.setOrientation(HORIZONTAL);
+		tableHeaders.setBackgroundColor(headerBackground);
+		tableHeaders.setLayoutParams(new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+		));
 
 		for (int i = 0; i < tableHeaderContents.length; i ++) {
 			if (i != 0) {
@@ -134,10 +145,10 @@ public class TableList extends LinearLayout {
 
 			TextView item = new TextView(getContext());
 			item.setText(tableHeaderContents[i]);
+			item.setTextColor(headerTextColor);
 			item.setPadding(tableAdapter.cellPadding, tableAdapter.cellPadding,
 					tableAdapter.cellPadding, tableAdapter.cellPadding);
-			item.setBackgroundColor(tableAdapter.cellBackgroundColor);
-			item.setLayoutParams(tableAdapter.getLayoutParamsAt(i, this.getWidth()));
+			item.setLayoutParams(tableAdapter.getLayoutParamsAt(i, 200));
 
 			tableHeaders.addView(item);
 		}
