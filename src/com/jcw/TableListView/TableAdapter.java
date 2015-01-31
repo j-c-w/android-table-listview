@@ -90,7 +90,10 @@ public abstract class TableAdapter<T> extends ArrayAdapter<T> {
 			tableRow.addView(rowDivider, dividerParams);
 		}
 
-		tableRow.addView(getView(position, convertView, parent, usableWidth));
+		View row = getView(position, convertView, parent, usableWidth);
+		row.setBackgroundColor(cellBackgroundColor);
+
+		tableRow.addView(row);
 
 		return tableRow;
 	}
