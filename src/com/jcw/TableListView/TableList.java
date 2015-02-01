@@ -53,6 +53,8 @@ public class TableList extends LinearLayout {
 	int headerTextColor = Color.BLACK;
 	int headerBackground = Color.TRANSPARENT;
 
+	private boolean headersNeedRefresh = true;
+
 	public TableList(Context context) {
 		super(context);
 		init();
@@ -80,20 +82,29 @@ public class TableList extends LinearLayout {
 		if (!isInEditMode()) {
 			ViewTreeObserver observer = this.getViewTreeObserver();
 			observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-				private boolean setup = false;
 				@Override
 				public void onGlobalLayout() {
 					// This was causing serious performance issues
 					// because it was constantly called. Putting it in
 					// this structure fixes that
-					if (!setup) {
+					if (headersNeedRefresh) {
 						setupTableHeaders();
-						setup = true;
+						headersNeedRefresh = false;
 					}
 				}
 			});
 		}
 		this.setOrientation(VERTICAL);
+		refreshUI();
+	}
+
+	/*
+	 * This is so the columns resize when the orientation of the
+	 * device is changed
+	 */
+	@Override
+	public void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+		super.onSizeChanged(width, height, oldWidth, oldHeight);
 		refreshUI();
 	}
 
@@ -138,7 +149,7 @@ public class TableList extends LinearLayout {
 		this.tableHeaderContents = headers;
 		this.headerTextColor = textColor;
 		this.headerBackground = background;
-		setupTableHeaders();
+		headersNeedRefresh = true;
 	}
 
 	private void setupTableHeaders() {
@@ -188,7 +199,7 @@ public class TableList extends LinearLayout {
 		this.addView(table);
 		this.addView(tableAdapter.getRowSeparator());
 
-		setupTableHeaders();
+		headersNeedRefresh = true;
 	}
 
 	public void setAdapter(TableAdapter adapter) {
