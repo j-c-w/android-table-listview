@@ -34,6 +34,7 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -79,9 +80,16 @@ public class TableList extends LinearLayout {
 		if (!isInEditMode()) {
 			ViewTreeObserver observer = this.getViewTreeObserver();
 			observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+				private boolean setup = false;
 				@Override
 				public void onGlobalLayout() {
-					setupTableHeaders();
+					// This was causing serious performance issues
+					// because it was constantly called. Putting it in
+					// this structure fixes that
+					if (!setup) {
+						setupTableHeaders();
+						setup = true;
+					}
 				}
 			});
 		}
@@ -140,6 +148,7 @@ public class TableList extends LinearLayout {
 			return;
 		}
 
+
 		tableHeaders.removeAllViews();
 		tableHeaders.setOrientation(HORIZONTAL);
 		tableHeaders.setBackgroundColor(headerBackground);
@@ -158,7 +167,7 @@ public class TableList extends LinearLayout {
 			item.setTextColor(headerTextColor);
 			item.setPadding(tableAdapter.cellPadding, tableAdapter.cellPadding,
 					tableAdapter.cellPadding, tableAdapter.cellPadding);
-			item.setLayoutParams(tableAdapter.getLayoutParamsAt(i, tableHeaders.getWidth()));
+			item.setLayoutParams(tableAdapter.getLayoutParamsAt(i, getWidth()));
 
 			tableHeaders.addView(item);
 		}
