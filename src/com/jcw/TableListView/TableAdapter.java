@@ -171,6 +171,6 @@ public abstract class TableAdapter<T> extends ArrayAdapter<T> {
 			return;
 		}
 		this.numberOfColumns = columnWidths.length;
-		this.unusableWidth = - (numberOfColumns * columnSpacing) - (numberOfColumns * 2 * cellPadding);
+		this.unusableWidth = (numberOfColumns * columnSpacing) + (numberOfColumns * 2 * cellPadding);
 	}
 }
